@@ -11,35 +11,21 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 import com.tachyonlabs.tweety.R;
 import com.tachyonlabs.tweety.fragments.UserTimelineFragment;
 import com.tachyonlabs.tweety.models.User;
-import com.tachyonlabs.tweety.utils.TwitterApplication;
-import com.tachyonlabs.tweety.utils.TwitterClient;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 
 public class ProfileActivity extends AppCompatActivity {
-    TwitterClient client;
     User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        client = TwitterApplication.getRestClient();
-        // get some account info
-        client.getUserInfo(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                user = User.fromJSON(response);
-                getSupportActionBar().setTitle("\u00A0\u00A0\u00A0@" + user.getScreenName());
-                populateProfileHeader(user);
-            }
-        });
+        user = (User) getIntent().getSerializableExtra("user");
+
+        populateProfileHeader(user);
 
         // get the screen name
         String screenName = getIntent().getStringExtra("screen_name");
@@ -58,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.mipmap.logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle("\u00A0\u00A0\u00A0@" + user.getScreenName());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

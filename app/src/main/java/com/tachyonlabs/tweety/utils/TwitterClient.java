@@ -42,28 +42,48 @@ public class TwitterClient extends OAuthBaseClient {
 	 *    i.e client.get(apiUrl, params, handler);
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
-	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
+    public void getHomeTimeline(long since_id, long max_id, AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         RequestParams params = new RequestParams();
-        params.put("count", 25);
-        params.put("since_id", 1);
+        params.put("count", 3);
+        if (max_id > 0) {
+            // add to the list tweets older than the currently displayed tweets
+            params.put("max_id", max_id);
+        } else {
+            // start with the newest tweets
+            params.put("since_id", since_id);
+        }
         // execute the request
         getClient().get(apiUrl, params, handler);
     }
 
-	public void getMentionsTimeline(AsyncHttpResponseHandler handler) {
+    public void getMentionsTimeline(long since_id, long max_id, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
+        if (max_id > 0) {
+            // add to the list tweets older than the currently displayed tweets
+            params.put("max_id", max_id);
+        } else {
+            // start with the newest tweets
+            params.put("since_id", since_id);
+        }
 		// execute the request
 		getClient().get(apiUrl, params, handler);
 	}
 
-	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler) {
+	public void getUserTimeline(long since_id, long max_id, String screenName, AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("statuses/user_timeline.json");
         RequestParams params = new RequestParams();
         params.put("screen_name", screenName);
         params.put("count", 25);
+        if (max_id > 0) {
+            // add to the list tweets older than the currently displayed tweets
+            params.put("max_id", max_id);
+        } else {
+            // start with the newest tweets
+            params.put("since_id", since_id);
+        }
         // execute the request
         getClient().get(apiUrl, params, handler);
     }
@@ -73,7 +93,13 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, null, handler);
     }
 
-	// compose tweet
-
+    // to post a tweet
+    public void postTweet(String myTweet, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/update.json");
+        RequestParams params = new RequestParams();
+        params.put("status", myTweet);
+        // execute the request
+        getClient().post(apiUrl, params, handler);
+    }
 
 }

@@ -3,7 +3,6 @@ package com.tachyonlabs.tweety.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,11 +14,21 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.tachyonlabs.tweety.R;
+import com.tachyonlabs.tweety.fragments.ComposeFragment;
 import com.tachyonlabs.tweety.fragments.HomeTimelineFragment;
 import com.tachyonlabs.tweety.fragments.MentionsTimelineFragment;
+import com.tachyonlabs.tweety.models.User;
+import com.tachyonlabs.tweety.utils.TwitterApplication;
+import com.tachyonlabs.tweety.utils.TwitterClient;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 public class TimelineActivity extends AppCompatActivity {
+    TwitterClient client;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +55,16 @@ public class TimelineActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                showComposeDialog();
+            }
+        });
+
+        client = TwitterApplication.getRestClient();
+        // get some account info
+        client.getUserInfo(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                user = User.fromJSON(response);
             }
         });
     }
@@ -59,10 +76,20 @@ public class TimelineActivity extends AppCompatActivity {
         return true;
     }
 
+    // bring up the dialogfragment for composing a new tweet
+    private void showComposeDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        // pass in the URL for the user's profile image
+        String myProfileImageUrl = user.getProfileImageUrl();
+        ComposeFragment composeFragment = ComposeFragment.newInstance(myProfileImageUrl);
+        composeFragment.show(fm, "fragment_compose");
+    }
+
     public void onProfileView(MenuItem mi) {
         // launch the profile view
-        Intent i = new Intent(this, ProfileActivity.class);
-        startActivity(i);
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
     }
 
     // return the order of the fragments in the ViewPager

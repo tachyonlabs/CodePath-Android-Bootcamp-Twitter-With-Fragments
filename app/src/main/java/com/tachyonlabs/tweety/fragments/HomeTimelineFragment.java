@@ -20,13 +20,13 @@ public class HomeTimelineFragment extends TweetsListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient(); // singleton client
-        populateTimeline();
+        populateTimeline(1, 0);
     }
 
     // send an API request to get the timeline JSON
     // fill the listview by creating the tweet objects from the JSON
-    private void populateTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+    public void populateTimeline(long since_id, long max_id) {
+        client.getHomeTimeline(since_id, max_id, new JsonHttpResponseHandler() {
             // Success
 
             @Override
