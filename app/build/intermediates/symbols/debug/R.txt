@@ -651,7 +651,6 @@ int id line3 0x7f0c008e
 int id listMode 0x7f0c000b
 int id list_item 0x7f0c0044
 int id llCounts 0x7f0c0072
-int id lvTweets 0x7f0c007f
 int id media_actions 0x7f0c0089
 int id miProfile 0x7f0c0092
 int id middle 0x7f0c0031
@@ -671,6 +670,7 @@ int id radio 0x7f0c0057
 int id repeat 0x7f0c0039
 int id right 0x7f0c0023
 int id rlUserHeader 0x7f0c006e
+int id rvTweets 0x7f0c007f
 int id screen 0x7f0c0027
 int id scroll 0x7f0c0018
 int id scrollIndicatorDown 0x7f0c0051

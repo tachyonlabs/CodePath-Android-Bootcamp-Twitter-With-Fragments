@@ -2492,7 +2492,6 @@ containing a value of this type.
         public static final int listMode=0x7f0c000b;
         public static final int list_item=0x7f0c0044;
         public static final int llCounts=0x7f0c0072;
-        public static final int lvTweets=0x7f0c007f;
         public static final int media_actions=0x7f0c0089;
         public static final int miProfile=0x7f0c0092;
         public static final int middle=0x7f0c0031;
@@ -2512,6 +2511,7 @@ containing a value of this type.
         public static final int repeat=0x7f0c0039;
         public static final int right=0x7f0c0023;
         public static final int rlUserHeader=0x7f0c006e;
+        public static final int rvTweets=0x7f0c007f;
         public static final int screen=0x7f0c0027;
         public static final int scroll=0x7f0c0018;
         public static final int scrollIndicatorDown=0x7f0c0051;
