@@ -3,6 +3,9 @@ package com.tachyonlabs.tweety.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.tachyonlabs.tweety.models.Tweet;
@@ -21,6 +24,12 @@ public class HomeTimelineFragment extends TweetsListFragment {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient(); // singleton client
         populateTimeline(1, 0);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, parent, savedInstanceState);
     }
 
     // send an API request to get the timeline JSON
@@ -45,5 +54,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
             }
         });
     }
+
 
 }

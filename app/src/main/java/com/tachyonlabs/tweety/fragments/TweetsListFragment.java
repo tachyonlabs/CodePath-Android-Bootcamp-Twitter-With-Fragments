@@ -47,7 +47,7 @@ public abstract class TweetsListFragment extends Fragment{
             public void onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                long max_id = tweets.get(tweets.size() - 1).getUid() + 1;
+                long max_id = tweets.get(tweets.size() - 1).getUid() - 1;
                 populateTimeline(1, max_id);
             }
         });

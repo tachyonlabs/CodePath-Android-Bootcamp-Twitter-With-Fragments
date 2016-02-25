@@ -45,7 +45,7 @@ public class TwitterClient extends OAuthBaseClient {
     public void getHomeTimeline(long since_id, long max_id, AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         RequestParams params = new RequestParams();
-        params.put("count", 3);
+        params.put("count", 25);
         if (max_id > 0) {
             // add to the list tweets older than the currently displayed tweets
             params.put("max_id", max_id);
