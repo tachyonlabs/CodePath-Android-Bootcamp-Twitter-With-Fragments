@@ -1,17 +1,23 @@
 package com.tachyonlabs.tweety.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.tachyonlabs.tweety.R;
+import com.tachyonlabs.tweety.activities.ProfileActivity;
 import com.tachyonlabs.tweety.adapters.TweetsAdapter;
 import com.tachyonlabs.tweety.models.Tweet;
 import com.tachyonlabs.tweety.models.User;
@@ -30,6 +36,7 @@ public abstract class TweetsListFragment extends Fragment{
     TweetsAdapter adapter;
     TwitterClient client;
     User user;
+    User userProfileImageClicked;
 
     // inflation logic
 
@@ -56,7 +63,11 @@ public abstract class TweetsListFragment extends Fragment{
         adapter.setOnItemClickListener(new TweetsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                showTweetDetailDialog(position);
+                if (view instanceof ImageView) {
+                    showUserProfile(view.getTag().toString());
+                } else {
+                    showTweetDetailDialog(position);
+                }
             }
         });
 
@@ -105,4 +116,52 @@ public abstract class TweetsListFragment extends Fragment{
         adapter.notifyItemRangeInserted(0, newTweets.size());
         //scrollToTop();
     }
+
+    public void onTweetButtonClicked(String myTweetText) {
+        // when the user composes a new tweet and taps the Tweet button, post it
+        client.postTweet(myTweetText, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
+                // get the new tweet and add it to the ArrayList
+                Tweet myNewTweet = Tweet.fromJSON(json);
+                tweets.add(0, myNewTweet);
+                // notify the adapter
+                adapter.notifyItemInserted(0);
+                // scroll back to display the new tweet
+                //scrollToTop();
+                // display a success Toast
+                Toast toast = Toast.makeText(getActivity(), "Tweet posted!", Toast.LENGTH_SHORT);
+                View view = toast.getView();
+                view.setBackgroundColor(0xC055ACEE);
+                TextView textView = (TextView) view.findViewById(android.R.id.message);
+                textView.setTextColor(0xFFFFFFFF);
+                toast.show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+            }
+        });
+    }
+
+    public void showUserProfile(String screenName) {
+        client.getOtherUserInfo(screenName, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
+                // get the new tweet and add it to the ArrayList
+                User user = User.fromJSON(json);
+                // launch the profile view
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+            }
+        });
+    }
+
 }

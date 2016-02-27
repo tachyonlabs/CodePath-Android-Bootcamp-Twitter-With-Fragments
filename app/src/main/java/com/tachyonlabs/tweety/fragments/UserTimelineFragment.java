@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.tachyonlabs.tweety.models.Tweet;
+import com.tachyonlabs.tweety.models.User;
 import com.tachyonlabs.tweety.utils.TwitterApplication;
 import com.tachyonlabs.tweety.utils.TwitterClient;
 
@@ -23,10 +24,10 @@ public class UserTimelineFragment extends TweetsListFragment {
         populateTimeline(1, 0);
     }
 
-    public static UserTimelineFragment newInstance(String screenName) {
+    public static UserTimelineFragment newInstance(User user) {
         UserTimelineFragment userFragment = new UserTimelineFragment();
         Bundle args = new Bundle();
-        args.putString("screen_name", screenName);
+        args.putSerializable("user", user);
         userFragment.setArguments(args);
         return userFragment;
     }
@@ -34,8 +35,8 @@ public class UserTimelineFragment extends TweetsListFragment {
     // send an API request to get the timeline JSON
     // fill the listview by creating the tweet objects from the JSON
     public void populateTimeline(long since_id, long max_id) {
-        String screenName = getArguments().getString("screen_name");
-        client.getUserTimeline(since_id, max_id, screenName, new JsonHttpResponseHandler() {
+        User user = (User) getArguments().getSerializable("user");
+        client.getUserTimeline(since_id, max_id, user.getScreenName(), new JsonHttpResponseHandler() {
             // Success
 
             @Override
