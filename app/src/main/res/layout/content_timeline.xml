@@ -10,6 +10,7 @@
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
+        android:textColor="@color/twitter_blue"
         app:pstsShouldExpand="true"
         app:pstsTextAllCaps="true"
         app:pstsIndicatorColor="@color/twitter_blue"

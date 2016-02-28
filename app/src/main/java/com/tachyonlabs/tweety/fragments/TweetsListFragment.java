@@ -105,20 +105,8 @@ public abstract class TweetsListFragment extends Fragment{
         tweetDetailFragment.show(fm, "fragment_tweet_detail");
     }
 
-    public void addAll(List<Tweet> initialOrOlderTweets) {
-        final int previousTweetsLength = tweets.size();
-        tweets.addAll(initialOrOlderTweets);
-        adapter.notifyItemRangeInserted(previousTweetsLength, initialOrOlderTweets.size());
-    }
-
-    public void insertAll(List<Tweet> newTweets) {
-        tweets.addAll(0, newTweets);
-        adapter.notifyItemRangeInserted(0, newTweets.size());
-        //scrollToTop();
-    }
-
-    public void onTweetButtonClicked(String myTweetText) {
-        // when the user composes a new tweet and taps the Tweet button, post it
+    public void postTheNewTweet(String myTweetText) {
+        Log.d("TWEET", myTweetText);
         client.postTweet(myTweetText, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
@@ -128,7 +116,7 @@ public abstract class TweetsListFragment extends Fragment{
                 // notify the adapter
                 adapter.notifyItemInserted(0);
                 // scroll back to display the new tweet
-                //scrollToTop();
+                scrollToTop();
                 // display a success Toast
                 Toast toast = Toast.makeText(getActivity(), "Tweet posted!", Toast.LENGTH_SHORT);
                 View view = toast.getView();
@@ -143,6 +131,25 @@ public abstract class TweetsListFragment extends Fragment{
                 Log.d("DEBUG", errorResponse.toString());
             }
         });
+    }
+
+    public void addAll(List<Tweet> initialOrOlderTweets) {
+        final int previousTweetsLength = tweets.size();
+        tweets.addAll(initialOrOlderTweets);
+        adapter.notifyItemRangeInserted(previousTweetsLength, initialOrOlderTweets.size());
+    }
+
+    public void insertAll(List<Tweet> newTweets) {
+        tweets.addAll(0, newTweets);
+        adapter.notifyItemRangeInserted(0, newTweets.size());
+        //scrollToTop();
+    }
+
+    public void scrollToTop() {
+        // when you post a tweet or swipe-to-refresh, scroll back to display the new tweet(s)
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager = (LinearLayoutManager) rvTweets.getLayoutManager();
+        linearLayoutManager.scrollToPositionWithOffset(0, 0);
     }
 
     public void showUserProfile(String screenName) {

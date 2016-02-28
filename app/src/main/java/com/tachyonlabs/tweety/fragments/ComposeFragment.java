@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tachyonlabs.tweety.R;
+import com.tachyonlabs.tweety.activities.TimelineActivity;
 
 public class ComposeFragment extends android.support.v4.app.DialogFragment {
     private String profileImageUrl;
@@ -62,16 +63,16 @@ public class ComposeFragment extends android.support.v4.app.DialogFragment {
 
         // set up listener for posting a tweet
         btnTweet = (Button) view.findViewById(R.id.btnTweet);
-//        btnTweet.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EditText etComposeTweet = (EditText) getDialog().findViewById(R.id.etComposeTweet);
-//                String myTweet = etComposeTweet.getText().toString();
-//                TimelineActivity timelineActivity = (TimelineActivity) getActivity();
-//                timelineActivity.onTweetButtonClicked(myTweet);
-//                getDialog().dismiss();
-//            }
-//        });
+        btnTweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText etComposeTweet = (EditText) getDialog().findViewById(R.id.etComposeTweet);
+                String myTweet = etComposeTweet.getText().toString();
+                TimelineActivity timelineActivity = (TimelineActivity) getActivity();
+                timelineActivity.onTweetButtonClicked(myTweet);
+                getDialog().dismiss();
+            }
+        });
 
         // or you can tap the X in the top-left corner to close the fragment
         ivClose = (ImageView) view.findViewById(R.id.ivClose);

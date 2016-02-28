@@ -9,9 +9,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -29,6 +31,8 @@ import org.json.JSONObject;
 public class TimelineActivity extends AppCompatActivity {
     TwitterClient client;
     User user;
+    ViewPager vpPager;
+    TweetsPagerAdapter tweetsPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +40,10 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         // get the viewpager
-        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        vpPager = (ViewPager) findViewById(R.id.viewpager);
         // set the viewpager adapter
-        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        tweetsPagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(tweetsPagerAdapter);
         // find the pager sliding tabstrip
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         // attach the tabstrip to the viewpager
@@ -77,7 +82,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     // bring up the dialogfragment for composing a new tweet
-    private void showComposeDialog() {
+    public void showComposeDialog() {
         FragmentManager fm = getSupportFragmentManager();
         // pass in the URL for the user's profile image
         String myProfileImageUrl = user.getProfileImageUrl();
@@ -92,14 +97,23 @@ public class TimelineActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onTweetButtonClicked(String myTweetText) {
+        // when the user composes a new tweet and taps the Tweet button, post it
+        if (vpPager.getCurrentItem() != 0) {
+            vpPager.setCurrentItem(0);
+        }
+        HomeTimelineFragment homeTimelineFragment = (HomeTimelineFragment) tweetsPagerAdapter.getRegisteredFragment(0);
+        homeTimelineFragment.postTheNewTweet(myTweetText);
+    }
+
     // return the order of the fragments in the ViewPager
     public class TweetsPagerAdapter extends FragmentPagerAdapter {
+        SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
         private String tabTitles[] = { "Home", "Mentions" };
 
         // adapter gets the manager - insert or remove fragments from activity
         public TweetsPagerAdapter(FragmentManager fm) {
             super(fm);
-
         }
 
         // order and creation of fragments within the pager
@@ -114,6 +128,23 @@ public class TimelineActivity extends AppCompatActivity {
             }
         }
 
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            registeredFragments.remove(position);
+            super.destroyItem(container, position, object);
+        }
+
+        public Fragment getRegisteredFragment(int position) {
+            return registeredFragments.get(position);
+        }
+
         // returns the tab title
         @Override
         public CharSequence getPageTitle(int position) {
@@ -126,7 +157,4 @@ public class TimelineActivity extends AppCompatActivity {
             return tabTitles.length;
         }
     }
-
-
-
 }

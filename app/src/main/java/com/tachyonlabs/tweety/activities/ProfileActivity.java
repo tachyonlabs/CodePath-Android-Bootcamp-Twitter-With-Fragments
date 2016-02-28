@@ -2,7 +2,7 @@ package com.tachyonlabs.tweety.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tachyonlabs.tweety.R;
+import com.tachyonlabs.tweety.fragments.ComposeFragment;
 import com.tachyonlabs.tweety.fragments.UserTimelineFragment;
 import com.tachyonlabs.tweety.models.User;
 
@@ -47,11 +48,11 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("\u00A0\u00A0\u00A0@" + user.getScreenName());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                showComposeDialog();
             }
         });
     }
@@ -61,6 +62,15 @@ public class ProfileActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
+    }
+
+    // bring up the dialogfragment for composing a new tweet
+    public void showComposeDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        // pass in the URL for the user's profile image
+        String myProfileImageUrl = user.getProfileImageUrl();
+        ComposeFragment composeFragment = ComposeFragment.newInstance(myProfileImageUrl);
+        composeFragment.show(fm, "fragment_compose");
     }
 
     private void populateProfileHeader(User user) {
