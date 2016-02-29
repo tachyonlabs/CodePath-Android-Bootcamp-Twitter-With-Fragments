@@ -178,7 +178,7 @@ public abstract class TweetsListFragment extends Fragment{
         client.getOtherUserInfo(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
-                // get the new tweet and add it to the ArrayList
+                Log.d("DEBUG", json.toString());
                 User user = User.fromJSON(json);
                 // launch the profile view
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);

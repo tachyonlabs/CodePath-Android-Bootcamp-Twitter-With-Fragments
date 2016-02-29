@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,7 +70,12 @@ public class TimelineActivity extends AppCompatActivity {
         client.getUserInfo(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("DEBUG", response.toString());
                 user = User.fromJSON(response);
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
             }
         });
     }
@@ -85,8 +91,7 @@ public class TimelineActivity extends AppCompatActivity {
     public void showComposeDialog() {
         FragmentManager fm = getSupportFragmentManager();
         // pass in the URL for the user's profile image
-        String myProfileImageUrl = user.getProfileImageUrl();
-        ComposeFragment composeFragment = ComposeFragment.newInstance(myProfileImageUrl);
+        ComposeFragment composeFragment = ComposeFragment.newInstance(user.getProfileImageUrl());
         composeFragment.show(fm, "fragment_compose");
     }
 

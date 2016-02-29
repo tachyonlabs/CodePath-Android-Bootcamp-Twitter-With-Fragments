@@ -27,8 +27,6 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     // fill the listview by creating the tweet objects from the JSON
     public void populateTimeline(long since_id, long max_id) {
         client.getMentionsTimeline(since_id, max_id, new JsonHttpResponseHandler() {
-            // Success
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 // deserialize JSON
@@ -36,8 +34,6 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                 // load the model data into the ListView
                 addAll(Tweet.fromJsonArray(json));
             }
-
-            // Failure
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("DEBUG", errorResponse.toString());
@@ -66,5 +62,4 @@ public class MentionsTimelineFragment extends TweetsListFragment {
             }
         });
     }
-
 }

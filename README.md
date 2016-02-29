@@ -56,8 +56,6 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-I just noticed (when I made my video walkthrough) that the Twitter API is returning 0 followings and followers for my own profile, even though the actual numbers are 161 and 81, and it returns the numbers correctly for other people's profiles. I'll see if I can track down the problem.
-
 Tweety image in icon from http://looneytunes.wikia.com/wiki/Tweety
 
 ## Open-source libraries used

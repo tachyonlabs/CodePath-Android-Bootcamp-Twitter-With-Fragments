@@ -37,8 +37,6 @@ public class UserTimelineFragment extends TweetsListFragment {
     public void populateTimeline(long since_id, long max_id) {
         User user = (User) getArguments().getSerializable("user");
         client.getUserTimeline(since_id, max_id, user.getScreenName(), new JsonHttpResponseHandler() {
-            // Success
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 // deserialize JSON
@@ -46,8 +44,6 @@ public class UserTimelineFragment extends TweetsListFragment {
                 // load the model data into the ListView
                 addAll(Tweet.fromJsonArray(json));
             }
-
-            // Failure
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("DEBUG", errorResponse.toString());

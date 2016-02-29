@@ -3,8 +3,6 @@ package com.tachyonlabs.tweety.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,8 +24,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         populateProfileHeader(user);
 
-        // get the screen name
-        String screenName = getIntent().getStringExtra("screen_name");
         if (savedInstanceState == null) {
             // create the user timeline fragment
             UserTimelineFragment fragmentUserTimeline = UserTimelineFragment.newInstance(user);
@@ -36,13 +32,6 @@ public class ProfileActivity extends AppCompatActivity {
             ft.replace(R.id.flContainer, fragmentUserTimeline);
             ft.commit();
         }
-    }
-
-    // Inflate the menu; this adds items to the action bar if it is present.
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
-        return true;
     }
 
     private void populateProfileHeader(User user) {
@@ -56,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvFullName.setText(user.getName());
         tvScreenName.setText("@" + user.getScreenName());
         tvTagLine.setText(user.getTagLine());
-        DecimalFormat insertCommas = new DecimalFormat("###,###,###,###,###,###");
+        DecimalFormat insertCommas = new DecimalFormat("###,###,###,###");
         tvFollowersCount.setText(insertCommas.format(user.getFollowersCount()));
         tvFollowingCount.setText(insertCommas.format(user.getFriendsCount()));
         Picasso.with(this).load(user.getProfileImageUrl()).into(ivProfileImage);
@@ -67,5 +56,4 @@ public class ProfileActivity extends AppCompatActivity {
             ivProfileBannerImage.setBackgroundColor(0xFF55acee);
         }
     }
-
 }

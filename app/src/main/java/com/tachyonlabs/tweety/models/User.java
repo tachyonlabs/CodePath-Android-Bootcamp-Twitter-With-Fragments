@@ -56,10 +56,10 @@ public class User  implements Serializable {
             u.uid = json.getLong("id");
             u.screenName = json.getString("screen_name");
             u.profileImageUrl = json.getString("profile_image_url");
-            u.profileBannerUrl = json.getString("profile_banner_url");
             u.tagLine = json.getString("description");
             u.followersCount = json.getInt("followers_count");
             u.followingsCount = json.getInt("friends_count");
+            u.profileBannerUrl = json.getString("profile_banner_url");
         } catch (JSONException e) {
             e.printStackTrace();
         }
