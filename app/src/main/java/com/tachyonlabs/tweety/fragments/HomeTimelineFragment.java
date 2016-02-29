@@ -32,10 +32,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
         return super.onCreateView(inflater, parent, savedInstanceState);
     }
 
-//    public void logLog() {
-//        Log.d("HOME", "loglog");
-//    }
-
     // send an API request to get the timeline JSON
     // fill the listview by creating the tweet objects from the JSON
     public void populateTimeline(long since_id, long max_id) {
@@ -58,6 +54,5 @@ public class HomeTimelineFragment extends TweetsListFragment {
             }
         });
     }
-
 
 }

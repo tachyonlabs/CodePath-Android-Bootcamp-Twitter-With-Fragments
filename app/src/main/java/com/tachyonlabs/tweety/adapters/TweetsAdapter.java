@@ -2,7 +2,6 @@ package com.tachyonlabs.tweety.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +64,6 @@ public class TweetsAdapter extends
                 @Override
                 public void onClick(View v) {
                     // Triggers click upwards to the adapter on click
-                    Log.d("ADAPTER", (v instanceof ImageView) + "");
                     if (listener != null)
                         listener.onItemClick(v, getLayoutPosition());
                 }
@@ -74,7 +72,6 @@ public class TweetsAdapter extends
                 @Override
                 public void onClick(View v) {
                     // Triggers click upwards to the adapter on click
-                    Log.d("ADAPTER", (v instanceof ImageView) + "");
                     if (listener != null)
                         listener.onItemClick(itemView, getLayoutPosition());
                 }

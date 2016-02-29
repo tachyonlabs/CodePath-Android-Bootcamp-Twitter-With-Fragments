@@ -46,6 +46,4 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         });
     }
 
-
-
 }

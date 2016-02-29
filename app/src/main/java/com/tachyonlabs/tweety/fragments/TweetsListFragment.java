@@ -142,7 +142,7 @@ public abstract class TweetsListFragment extends Fragment{
     public void insertAll(List<Tweet> newTweets) {
         tweets.addAll(0, newTweets);
         adapter.notifyItemRangeInserted(0, newTweets.size());
-        //scrollToTop();
+        scrollToTop();
     }
 
     public void scrollToTop() {

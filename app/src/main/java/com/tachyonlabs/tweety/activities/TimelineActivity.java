@@ -99,6 +99,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     public void onTweetButtonClicked(String myTweetText) {
         // when the user composes a new tweet and taps the Tweet button, post it
+        // Switch to the home timeline if not already there
         if (vpPager.getCurrentItem() != 0) {
             vpPager.setCurrentItem(0);
         }
