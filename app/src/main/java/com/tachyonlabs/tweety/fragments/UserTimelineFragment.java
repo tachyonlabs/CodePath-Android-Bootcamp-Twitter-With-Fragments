@@ -44,7 +44,6 @@ public class UserTimelineFragment extends TweetsListFragment {
                 // deserialize JSON
                 // create models
                 // load the model data into the ListView
-                Log.d("DEBUG", json.toString());
                 addAll(Tweet.fromJsonArray(json));
             }
 
@@ -56,6 +55,25 @@ public class UserTimelineFragment extends TweetsListFragment {
         });
     }
 
+    public void fetchTimelineAsync() {
+        // Send the network request to fetch the updated data on Swipe-to-refresh
+        // `client` here is an instance of Android Async HTTP
+        long since_id;
+        long max_id = 0;
+        // get tweets newer than the current newest tweet
+        Tweet newestDisplayedTweet = tweets.get(0);
+        since_id = newestDisplayedTweet.getUid();
+        client.getUserTimeline(since_id, max_id, user.getScreenName(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                // add them to the ArrayList, notify the adapter, scroll back to show the new tweets
+                insertAll(Tweet.fromJsonArray(json));
+            }
 
-
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+            }
+        });
+    }
 }

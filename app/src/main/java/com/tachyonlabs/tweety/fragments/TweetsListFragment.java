@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,6 +36,7 @@ public abstract class TweetsListFragment extends Fragment{
     ArrayList<Tweet> tweets;
     TweetsAdapter adapter;
     TwitterClient client;
+    SwipeRefreshLayout swipeContainer;
     User user;
     User userProfileImageClicked;
 
@@ -44,6 +46,22 @@ public abstract class TweetsListFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
+        // Lookup the swipe container view
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                fetchTimelineAsync();
+            }
+        });
+
+        // Configure the refreshing colors
+        // alternate colors between Twitter blue and Tweety yellow :-)
+        swipeContainer.setColorSchemeColors(0xFF55acee, 0xFFFFFF00, 0xFF55acee, 0xFFFFFF00);
         rvTweets = (RecyclerView) v.findViewById(R.id.rvTweets);
         rvTweets.setAdapter(adapter);
         // Set layout manager to position the items
@@ -93,8 +111,10 @@ public abstract class TweetsListFragment extends Fragment{
         });
     }
 
-    // Abstract method to be overridden by fragments extending it
+    // Abstract methods to be overridden by fragments extending them
     protected abstract void populateTimeline(long since_id, long max_id);
+
+    protected abstract void fetchTimelineAsync();
 
     // bring up the dialogfragment for showing a detailed view of a tweet
     private void showTweetDetailDialog(int position) {
@@ -143,6 +163,8 @@ public abstract class TweetsListFragment extends Fragment{
         tweets.addAll(0, newTweets);
         adapter.notifyItemRangeInserted(0, newTweets.size());
         scrollToTop();
+        // Now we call setRefreshing(false) to signal refresh has finished
+        swipeContainer.setRefreshing(false);
     }
 
     public void scrollToTop() {

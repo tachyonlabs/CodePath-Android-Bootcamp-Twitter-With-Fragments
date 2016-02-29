@@ -2,7 +2,7 @@
 
 **Tweety** is an android app that allows a user to view home and mentions timelines, view user profiles with user timelines, as well as compose and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
-Time spent: **X** hours spent in total
+Time spent: 
 
 ## User Stories
 
@@ -44,6 +44,7 @@ The following **additional** features are implemented:
 * [x] User can **click a link within a tweet body** within the Timeline activity. The click will launch the web browser with relevant page opened.
 * [x] Tweet detail functionality is built using modal overlay
 * [x] Move the "Compose" action to a [FloatingActionButton](https://github.com/codepath/android_guides/wiki/Floating-Action-Buttons) instead of on the AppBar.
+* [x] User can **pull down to refresh tweets timeline**
 
 ## Video Walkthrough 
 
