@@ -2,7 +2,7 @@
 
 **Tweety** is an android app that allows a user to view home and mentions timelines, view user profiles with user timelines, as well as compose and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
-Time spent: 
+Time spent: On Wednesday I came down with a nasty cold, and for the three days after that in particular I just had zero energy and a very large amount of coughing fits, so it has been very slow going. I did complete all the requirements, but not as many other features as I would have under happier circumstances.
 
 ## User Stories
 
@@ -50,11 +50,13 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://tachyonlabs.com/miscimages/twitter_with_fragments_.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
+
+I just noticed (when I made my video walkthrough) that the Twitter API is returning 0 followings and followers for my own profile, even though the actual numbers are 161 and 81, and it returns the numbers correctly for other people's profiles. I'll see if I can track down the problem.
 
 Tweety image in icon from http://looneytunes.wikia.com/wiki/Tweety
 
