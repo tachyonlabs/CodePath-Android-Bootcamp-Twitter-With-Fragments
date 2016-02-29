@@ -11,11 +11,9 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tachyonlabs.tweety.R;
 import com.tachyonlabs.tweety.models.Tweet;
+import com.tachyonlabs.tweety.utils.TwitterTimeFormats;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 // based on http://guides.codepath.com/android/Using-the-RecyclerView
 
@@ -113,7 +111,7 @@ public class TweetsAdapter extends
         TextView tvScreenName = viewHolder.tvScreenName;
         tvScreenName.setText("@" + tweet.getUser().getScreenName());
         TextView tvRelativeTime = viewHolder.tvRelativeTime;
-        tvRelativeTime.setText(relativeDate(tweet.getCreatedAt()));
+        tvRelativeTime.setText(TwitterTimeFormats.relativeDate(tweet.getCreatedAt()));
         TextView tvBody = viewHolder.tvBody;
         tvBody.setText(tweet.getBody());
 
@@ -122,36 +120,6 @@ public class TweetsAdapter extends
         ImageView ivProfileImage = viewHolder.ivProfileImage;
         ivProfileImage.setTag(tweet.getUser().getScreenName());
         Picasso.with(viewHolder.ivProfileImage.getContext()).load(tweet.getUser().getProfileImageUrl()).fit().centerCrop().into(ivProfileImage);
-    }
-
-    private String relativeDate(String createdAt) {
-        // get a Twitter-app-style string of how long ago the tweet was tweeted
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-        sf.setLenient(true);
-        String dateString;
-        long msDate = 0;
-        try {
-            msDate = sf.parse(createdAt).getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        // the Math.max is because occasionally I see a newest tweet from Twitter with a value like
-        // negative three seconds
-        long relativeDate = Math.max(System.currentTimeMillis() - msDate, 0);
-        if (relativeDate > 604800000L) {
-            dateString = (relativeDate / 604800000L) + "w";
-        } else if (relativeDate > 86400000L) {
-            dateString = (relativeDate / 86400000L) + "d";
-        } else if (relativeDate > 3600000L) {
-            dateString = (relativeDate / 3600000L) + "h";
-        } else if (relativeDate > 60000) {
-            dateString = (relativeDate / 60000) + "m";
-        } else {
-            dateString = (relativeDate / 1000) + "s";
-        }
-
-        return dateString;
     }
 
     // Return the total count of items

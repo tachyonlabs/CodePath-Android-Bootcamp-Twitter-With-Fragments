@@ -43,6 +43,7 @@ The following **additional** features are implemented:
 * [x] [Leverage RecyclerView](http://guides.codepath.com/android/Using-the-RecyclerView) as a replacement for the ListView and ArrayAdapter for all lists of tweets.
 * [x] User can **click a link within a tweet body** within the Timeline activity. The click will launch the web browser with relevant page opened.
 * [x] Tweet detail functionality is built using modal overlay
+* [x] Move the "Compose" action to a [FloatingActionButton](https://github.com/codepath/android_guides/wiki/Floating-Action-Buttons) instead of on the AppBar.
 
 ## Video Walkthrough 
 

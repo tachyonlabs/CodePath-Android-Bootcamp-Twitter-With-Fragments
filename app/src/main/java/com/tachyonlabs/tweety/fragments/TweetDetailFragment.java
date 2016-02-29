@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tachyonlabs.tweety.R;
 import com.tachyonlabs.tweety.models.Tweet;
+import com.tachyonlabs.tweety.utils.TwitterTimeFormats;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,7 +67,7 @@ public class TweetDetailFragment extends android.support.v4.app.DialogFragment {
         tvUserName.setText(tweet.getUser().getName());
         tvScreenName.setText("@" + tweet.getUser().getScreenName());
         tvTweetBody.setText(tweet.getBody());
-        String tweetTimeStamp = useTweetDetailDateFormat(tweet.getCreatedAt());
+        String tweetTimeStamp = TwitterTimeFormats.tweetDetailDateFormat(tweet.getCreatedAt());
         tvTimeStamp.setText(tweetTimeStamp);
 
         // the X in the top-left corner closes the fragment
@@ -78,27 +79,4 @@ public class TweetDetailFragment extends android.support.v4.app.DialogFragment {
         });
     }
 
-    // display the tweet's timestamp using the format that the Twitter app uses when you
-    // tap a tweet to bring up a detailed view
-    public String useTweetDetailDateFormat(String rawJsonDate) {
-        Date date;
-        long dateMillis = 0;
-        date = new Date(dateMillis);
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-        sf.setLenient(true);
-
-        try {
-            dateMillis = sf.parse(rawJsonDate).getTime();
-            date = new Date(dateMillis);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String twitterDetailDateFormat = "h:mm a • d MMM yy";
-        SimpleDateFormat stdf = new SimpleDateFormat(twitterDetailDateFormat, Locale.ENGLISH);
-        stdf.setLenient(true);
-
-        return stdf.format(date);
-    }
 }
